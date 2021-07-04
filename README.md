@@ -2,7 +2,7 @@
 
 ## Demo :rocket:
 
-[demo](demo.gif)
+![demo](demo.gif)
 
 ## Using :hammer:
 
