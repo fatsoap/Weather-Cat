@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  weather-linebot
+
+  Sample SAM Template for weather-linebot
+
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  WeatherFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: weather-linebot/
+      Handler: weather-linebot
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Tracing: Active
+      Events:
+        CatchAll:
+          Type: HttpApi
+          Properties:
+            Path: /weather
+            Method: GET
+      Environment:
+        Variables:
+          TEST_ENV: test
