@@ -552,6 +552,23 @@ var hintFlexMessageTemplate = `{
 		  "gravity": "center",
 		  "size": "sm",
 		  "align": "center"
+		},
+		{
+		  "type": "text",
+		  "text": "Send location message to get current weather (=ↀωↀ=)",
+		  "wrap": true,
+		  "weight": "regular",
+		  "gravity": "center",
+		  "size": "sm",
+		  "align": "center"
+		},
+		{
+		  "type": "button",
+		  "action": {
+			"type": "uri",
+			"label": "Github",
+			"uri": "https://github.com/fatsoap/Weather-Cat"
+		  }
 		}
 	  ]
 	}
