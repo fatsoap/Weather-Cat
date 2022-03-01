@@ -1,9 +1,7 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  weather-linebot
-
-  Sample SAM Template for weather-linebot
+  weather-cat
 
 Globals:
   Function:
@@ -13,8 +11,8 @@ Resources:
   WeatherFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: weather-linebot/
-      Handler: weather-linebot
+      CodeUri: weather-cat/
+      Handler: weather-cat
       Runtime: go1.x
       Architectures:
         - x86_64

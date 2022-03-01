@@ -1,4 +1,4 @@
-module weather-linebot
+module weather-cat
 
 go 1.17
 
