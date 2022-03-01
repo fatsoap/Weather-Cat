@@ -1,6 +1,11 @@
 package main
 
-import "github.com/line/line-bot-sdk-go/v7/linebot"
+import (
+	"fmt"
+	"time"
+
+	"github.com/line/line-bot-sdk-go/v7/linebot"
+)
 
 /*
 Follow Event Struct
@@ -21,6 +26,16 @@ Follow Event Struct
 }
 */
 
-func handleFollow(event *linebot.Event) error {
+func handleFollow(bot *linebot.Client, event *linebot.Event) error {
+	fmt.Printf("User:%v\nFollowed Weather Cat", event.Source.UserID)
+	text := fmt.Sprintf(hintFlexMessageTemplate, fmt.Sprintf("%v", time.Now().Nanosecond())[:2])
+	altText := defaultAltText
+	flexContainer, err := linebot.UnmarshalFlexMessageJSON([]byte(text))
+	if err != nil {
+		fmt.Println("Flex Message Unmarshal Failed")
+	}
+	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage(altText, flexContainer)).Do(); err != nil {
+		fmt.Println("Reply Flex Message Failed")
+	}
 	return nil
 }
