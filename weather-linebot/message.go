@@ -35,6 +35,8 @@ import (
 */
 
 func handleMessage(bot *linebot.Client, event *linebot.Event) error {
+	text := ""
+	altText := "貓咪"
 	switch message := event.Message.(type) {
 	case *linebot.LocationMessage: // 位置訊息
 		lat := message.Latitude
@@ -47,9 +49,9 @@ func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 		}
 		cords := owm.Coordinates{Latitude: lat, Longitude: lon}
 		current.CurrentByCoordinates(&cords)
-		text := ""
 		{
 			text = fmt.Sprintf(flexMessageTemplate,
+				fmt.Sprintf("%v", time.Now().Nanosecond())[:2],
 				current.Weather[0].Description,
 				current.Main.Temp,
 				current.Main.TempMax,
@@ -65,26 +67,18 @@ func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 				current.Snow.OneH,
 			)
 		}
-		fmt.Println(text)
-		flexContainer, err := linebot.UnmarshalFlexMessageJSON([]byte(text))
-		if err != nil {
-			fmt.Println("Flex Message Unmarshal Failed")
-		}
-		if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("alt text", flexContainer)).Do(); err != nil {
-			fmt.Println("Reply Flex Message Failed")
-		}
-
+		altText = "天氣"
 	default: // 其他訊息
 		fmt.Println("Not Location Message")
-		flexContainer, err := linebot.UnmarshalFlexMessageJSON([]byte(fl))
-		if err != nil {
-			fmt.Println("Flex Message Unmarshal Failed")
-		}
-		if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("alt text", flexContainer)).Do(); err != nil {
-			fmt.Println("Reply Flex Message Failed")
-		}
+		text = fmt.Sprintf(hintFlexMessageTemplate, fmt.Sprintf("%v", time.Now().Nanosecond())[:2])
 	}
-
+	flexContainer, err := linebot.UnmarshalFlexMessageJSON([]byte(text))
+	if err != nil {
+		fmt.Println("Flex Message Unmarshal Failed")
+	}
+	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage(altText, flexContainer)).Do(); err != nil {
+		fmt.Println("Reply Flex Message Failed")
+	}
 	return nil
 }
 
@@ -142,7 +136,7 @@ var flexMessageTemplate = `{
 	"type": "bubble",
 	"hero": {
 	  "type": "image",
-	  "url": "https://source.unsplash.com/random/?weather",
+	  "url": "https://source.unsplash.com/random/?weather,%v",
 	  "size": "full",
 	  "aspectRatio": "20:13",
 	  "aspectMode": "cover",
@@ -260,9 +254,7 @@ var flexMessageTemplate = `{
 				}
 			  ]
 			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
+		  ]
 		},
 		{
 		  "type": "box",
@@ -534,11 +526,11 @@ var flexMessageTemplate = `{
 	}
   }`
 
-var fl = `{
+var hintFlexMessageTemplate = `{
 	"type": "bubble",
 	"hero": {
 	  "type": "image",
-	  "url": "https://source.unsplash.com/random/?weather",
+	  "url": "https://source.unsplash.com/random/?cat,%v",
 	  "size": "full",
 	  "aspectRatio": "20:13",
 	  "aspectMode": "cover",
@@ -550,375 +542,16 @@ var fl = `{
 	"body": {
 	  "type": "box",
 	  "layout": "vertical",
+	  "spacing": "md",
 	  "contents": [
 		{
-		  "type": "box",
-		  "layout": "vertical",
-		  "contents": [
-			{
-			  "type": "box",
-			  "layout": "horizontal",
-			  "contents": [
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": []
-				},
-				{
-				  "type": "text",
-				  "text": "多雲",
-				  "size": "md",
-				  "align": "center",
-				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "21˚",
-				  "size": "xxl",
-				  "align": "center",
-				  "flex": 1
-				},
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": []
-				}
-			  ],
-			  "flex": 0,
-			  "alignItems": "center",
-			  "justifyContent": "center"
-			},
-			{
-			  "type": "box",
-			  "layout": "horizontal",
-			  "margin": "none",
-			  "spacing": "none",
-			  "contents": [
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": [],
-				  "flex": 1
-				},
-				{
-				  "type": "box",
-				  "layout": "baseline",
-				  "spacing": "sm",
-				  "contents": [
-					{
-					  "type": "text",
-					  "text": "最高",
-					  "color": "#aaaaaa",
-					  "size": "sm",
-					  "flex": 1
-					},
-					{
-					  "type": "text",
-					  "text": "23˚",
-					  "wrap": true,
-					  "color": "#666666",
-					  "size": "sm",
-					  "flex": 1
-					}
-				  ]
-				},
-				{
-				  "type": "box",
-				  "layout": "baseline",
-				  "spacing": "sm",
-				  "contents": [
-					{
-					  "type": "text",
-					  "text": "最低",
-					  "color": "#aaaaaa",
-					  "size": "sm",
-					  "flex": 1
-					},
-					{
-					  "type": "text",
-					  "text": "19˚",
-					  "wrap": true,
-					  "color": "#666666",
-					  "size": "sm",
-					  "flex": 1
-					}
-				  ]
-				},
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": [],
-				  "flex": 1
-				}
-			  ]
-			}
-		  ]
-		},
-		{
-		  "type": "box",
-		  "layout": "horizontal",
-		  "margin": "lg",
-		  "spacing": "sm",
-		  "contents": [
-			{
-			  "type": "text",
-			  "text": "風",
-			  "color": "#aaaaaa",
-			  "size": "sm",
-			  "flex": 1
-			},
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "none",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "北東北 4.12 公尺/秒",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "center"
-				}
-			  ],
-			  "flex": 3
-			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
-		},
-		{
-		  "type": "box",
-		  "layout": "horizontal",
-		  "margin": "lg",
-		  "spacing": "sm",
-		  "contents": [
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "雲量",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "75%",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end",
-				  "offsetEnd": "sm"
-				}
-			  ]
-			},
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "濕度",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1,
-				  "offsetStart": "sm"
-				},
-				{
-				  "type": "text",
-				  "text": "82%",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end"
-				}
-			  ]
-			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
-		},
-		{
-		  "type": "box",
-		  "layout": "horizontal",
-		  "margin": "lg",
-		  "spacing": "sm",
-		  "contents": [
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "日出",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "06:18",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end",
-				  "offsetEnd": "sm"
-				}
-			  ]
-			},
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "日落",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1,
-				  "offsetStart": "sm"
-				},
-				{
-				  "type": "text",
-				  "text": "17:57",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end"
-				}
-			  ]
-			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
-		},
-		{
-		  "type": "box",
-		  "layout": "horizontal",
-		  "margin": "lg",
-		  "spacing": "sm",
-		  "contents": [
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "體感",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "21˚",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end",
-				  "offsetEnd": "sm"
-				}
-			  ]
-			},
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "氣壓",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1,
-				  "offsetStart": "sm"
-				},
-				{
-				  "type": "text",
-				  "text": "1015百帕",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end"
-				}
-			  ]
-			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
-		},
-		{
-		  "type": "box",
-		  "layout": "horizontal",
-		  "margin": "lg",
-		  "spacing": "sm",
-		  "contents": [
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "降雨量",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "0mm",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end",
-				  "offsetEnd": "sm"
-				}
-			  ]
-			},
-			{
-			  "type": "box",
-			  "layout": "baseline",
-			  "spacing": "sm",
-			  "contents": [
-				{
-				  "type": "text",
-				  "text": "降雪量",
-				  "color": "#aaaaaa",
-				  "size": "sm",
-				  "flex": 1,
-				  "offsetStart": "sm"
-				},
-				{
-				  "type": "text",
-				  "text": "0mm",
-				  "wrap": true,
-				  "color": "#666666",
-				  "size": "sm",
-				  "flex": 1,
-				  "align": "end"
-				}
-			  ]
-			}
-		  ],
-		  "alignItems": "center",
-		  "justifyContent": "center"
+		  "type": "text",
+		  "text": "使用位置訊息來取得當前位置的天氣",
+		  "wrap": true,
+		  "weight": "regular",
+		  "gravity": "center",
+		  "size": "sm",
+		  "align": "center"
 		}
 	  ]
 	}
