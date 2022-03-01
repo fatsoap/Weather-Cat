@@ -44,30 +44,6 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			}
 		}
 	}
-	// 		//ts := event.Timestamp.Format("MM-dd-HH-mm")
-	// 		//fmt.Println(event.Source.Type) // group , user, room
-	// 		switch message := event.Message.(type) {
-	// 		case *linebot.TextMessage: //是文字訊息
-	// 			quota, err := s.bot.GetMessageQuota().Do()
-	// 			if err != nil {
-	// 				fmt.Println("Get Quota err:", err)
-	// 			}
-	// 			resMessage := MessageParser(message, quota)
-	// 			if _, err = s.bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(resMessage)).Do(); err != nil {
-	// 				fmt.Println("Line Bot Reply Message error : ", err)
-	// 			}
-	// 		default:
-	// 			fmt.Println("Not text message") //不是文字訊息
-	// 			if _, err = s.bot.ReplyMessage(event.ReplyToken, linebot.NewStickerMessage("6136", "10551376")).Do(); err != nil {
-	// 				fmt.Println("Line Bot Reply Sticker error : ", err)
-	// 			}
-	// 			//list of sticker
-	// 			//https://developers.line.biz/en/docs/messaging-api/sticker-list/#sticker-definitions
-	// 		}
-	// 	} else {
-	// 		// 不需要回覆
-	// 	}
-	// }
 	return events.APIGatewayProxyResponse{
 		Body:       fmt.Sprintf("Hello, %v", string("Sheep")),
 		StatusCode: 200,
