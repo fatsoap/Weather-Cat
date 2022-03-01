@@ -36,7 +36,7 @@ import (
 
 func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 	text := ""
-	altText := "貓咪"
+	altText := defaultAltText
 	switch message := event.Message.(type) {
 	case *linebot.LocationMessage: // 位置訊息
 		lat := message.Latitude
@@ -67,7 +67,7 @@ func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 				current.Snow.OneH,
 			)
 		}
-		altText = "天氣"
+		altText = "天氣喵喵喵"
 	default: // 其他訊息
 		fmt.Println("Not Location Message")
 		text = fmt.Sprintf(hintFlexMessageTemplate, fmt.Sprintf("%v", time.Now().Nanosecond())[:2])
@@ -131,6 +131,8 @@ func handleTime(timestamp int) string {
 	ts := time.Unix(int64(timestamp), 0)
 	return fmt.Sprintf("%02d:%02d", ts.In(tz).Hour(), ts.In(tz).Minute())
 }
+
+var defaultAltText = "喵喵喵"
 
 var flexMessageTemplate = `{
 	"type": "bubble",
@@ -555,7 +557,7 @@ var hintFlexMessageTemplate = `{
 		},
 		{
 		  "type": "text",
-		  "text": "Send location message to get current weather (=ↀωↀ=)",
+		  "text": "send location message to get current weather (=ↀωↀ=)",
 		  "wrap": true,
 		  "weight": "regular",
 		  "gravity": "center",
