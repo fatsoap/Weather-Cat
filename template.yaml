@@ -24,7 +24,7 @@ Resources:
           Type: HttpApi
           Properties:
             Path: /weather
-            Method: GET
+            Method: POST
       Environment:
         Variables:
           TEST_ENV: test
