@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,12 +20,34 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			StatusCode: 500,
 		}, nil
 	}
-	var r http.Request
-	r.Body = io.NopCloser(strings.NewReader(request.Body))
-	r.Header = make(http.Header)
-	r.Header.Add("X-Line-Signature", request.Headers["X-Line-Signature"])
+	httpRequest, err := http.NewRequest(
+		strings.ToUpper(request.HTTPMethod),
+		request.Path,
+		bytes.NewReader([]byte(request.Body)),
+	)
 
-	message_events, err := bot.ParseRequest(&r)
+	if err != nil {
+		fmt.Printf("Convert To Request Failed")
+		return events.APIGatewayProxyResponse{
+			Body:       "Convert To Request Failed",
+			StatusCode: 500,
+		}, nil
+	}
+
+	if request.MultiValueHeaders != nil {
+		for k, values := range request.MultiValueHeaders {
+			for _, value := range values {
+				httpRequest.Header.Add(k, value)
+			}
+		}
+	} else {
+		for h := range request.Headers {
+			httpRequest.Header.Add(h, request.Headers[h])
+		}
+	}
+
+	httpRequest.RequestURI = httpRequest.URL.RequestURI()
+	message_events, err := bot.ParseRequest(httpRequest)
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
 			fmt.Println("ErrInvalidSignature")
