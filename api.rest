@@ -1,0 +1,5 @@
+### POST Message
+POST http://localhost:3000/weather/
+Content-Type: application/json
+
+{ "data": 123 }
