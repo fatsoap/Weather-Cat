@@ -12,7 +12,6 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	env := GetEnv()
 	bot, err := linebot.New(env.LINE_SCRET_TOKEN, env.LINE_ACCESS_TOKEN)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -35,11 +34,16 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}
 	}
 	for _, event := range message_events {
-		fmt.Println(event)
+		if event.Type == linebot.EventTypeFollow { //加好友
+			if err := handleFollow(event); err != nil {
+				fmt.Printf("Handle Follow Failed , User %s", event.Source.UserID)
+			}
+		} else if event.Type == linebot.EventTypeMessage { //訊息
+			if err := handleMessage(event); err != nil {
+				fmt.Printf("Handle Message Failed , User %s", event.Source.UserID)
+			}
+		}
 	}
-	// 	if event.Type == linebot.EventTypeFollow { //加好友
-
-	// 	} else if event.Type == linebot.EventTypeFollow { //加好友
 	// 		//ts := event.Timestamp.Format("MM-dd-HH-mm")
 	// 		//fmt.Println(event.Source.Type) // group , user, room
 	// 		switch message := event.Message.(type) {
