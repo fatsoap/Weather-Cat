@@ -141,11 +141,7 @@ var flexMessageTemplate = `{
 	  "url": "https://source.unsplash.com/random/?weather,%v",
 	  "size": "full",
 	  "aspectRatio": "20:13",
-	  "aspectMode": "cover",
-	  "action": {
-		"type": "uri",
-		"uri": "http://linecorp.com/"
-	  }
+	  "aspectMode": "cover"
 	},
 	"body": {
 	  "type": "box",
@@ -535,11 +531,7 @@ var hintFlexMessageTemplate = `{
 	  "url": "https://source.unsplash.com/random/?cat,%v",
 	  "size": "full",
 	  "aspectRatio": "20:13",
-	  "aspectMode": "cover",
-	  "action": {
-		"type": "uri",
-		"uri": "http://linecorp.com/"
-	  }
+	  "aspectMode": "cover"
 	},
 	"body": {
 	  "type": "box",
