@@ -76,6 +76,13 @@ func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 
 	default: // 其他訊息
 		fmt.Println("Not Location Message")
+		flexContainer, err := linebot.UnmarshalFlexMessageJSON([]byte(fl))
+		if err != nil {
+			fmt.Println("Flex Message Unmarshal Failed")
+		}
+		if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewFlexMessage("alt text", flexContainer)).Do(); err != nil {
+			fmt.Println("Reply Flex Message Failed")
+		}
 	}
 
 	return nil
@@ -511,6 +518,396 @@ var flexMessageTemplate = `{
 				{
 				  "type": "text",
 				  "text": "%.0fmm",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end"
+				}
+			  ]
+			}
+		  ],
+		  "alignItems": "center",
+		  "justifyContent": "center"
+		}
+	  ]
+	}
+  }`
+
+var fl = `{
+	"type": "bubble",
+	"hero": {
+	  "type": "image",
+	  "url": "https://source.unsplash.com/random/?weather",
+	  "size": "full",
+	  "aspectRatio": "20:13",
+	  "aspectMode": "cover",
+	  "action": {
+		"type": "uri",
+		"uri": "http://linecorp.com/"
+	  }
+	},
+	"body": {
+	  "type": "box",
+	  "layout": "vertical",
+	  "contents": [
+		{
+		  "type": "box",
+		  "layout": "vertical",
+		  "contents": [
+			{
+			  "type": "box",
+			  "layout": "horizontal",
+			  "contents": [
+				{
+				  "type": "box",
+				  "layout": "vertical",
+				  "contents": []
+				},
+				{
+				  "type": "text",
+				  "text": "多雲",
+				  "size": "md",
+				  "align": "center",
+				  "flex": 1
+				},
+				{
+				  "type": "text",
+				  "text": "21˚",
+				  "size": "xxl",
+				  "align": "center",
+				  "flex": 1
+				},
+				{
+				  "type": "box",
+				  "layout": "vertical",
+				  "contents": []
+				}
+			  ],
+			  "flex": 0,
+			  "alignItems": "center",
+			  "justifyContent": "center"
+			},
+			{
+			  "type": "box",
+			  "layout": "horizontal",
+			  "margin": "none",
+			  "spacing": "none",
+			  "contents": [
+				{
+				  "type": "box",
+				  "layout": "vertical",
+				  "contents": [],
+				  "flex": 1
+				},
+				{
+				  "type": "box",
+				  "layout": "baseline",
+				  "spacing": "sm",
+				  "contents": [
+					{
+					  "type": "text",
+					  "text": "最高",
+					  "color": "#aaaaaa",
+					  "size": "sm",
+					  "flex": 1
+					},
+					{
+					  "type": "text",
+					  "text": "23˚",
+					  "wrap": true,
+					  "color": "#666666",
+					  "size": "sm",
+					  "flex": 1
+					}
+				  ]
+				},
+				{
+				  "type": "box",
+				  "layout": "baseline",
+				  "spacing": "sm",
+				  "contents": [
+					{
+					  "type": "text",
+					  "text": "最低",
+					  "color": "#aaaaaa",
+					  "size": "sm",
+					  "flex": 1
+					},
+					{
+					  "type": "text",
+					  "text": "19˚",
+					  "wrap": true,
+					  "color": "#666666",
+					  "size": "sm",
+					  "flex": 1
+					}
+				  ]
+				},
+				{
+				  "type": "box",
+				  "layout": "vertical",
+				  "contents": [],
+				  "flex": 1
+				}
+			  ]
+			}
+		  ]
+		},
+		{
+		  "type": "box",
+		  "layout": "horizontal",
+		  "margin": "lg",
+		  "spacing": "sm",
+		  "contents": [
+			{
+			  "type": "text",
+			  "text": "風",
+			  "color": "#aaaaaa",
+			  "size": "sm",
+			  "flex": 1
+			},
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "none",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "北東北 4.12 公尺/秒",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "center"
+				}
+			  ],
+			  "flex": 3
+			}
+		  ],
+		  "alignItems": "center",
+		  "justifyContent": "center"
+		},
+		{
+		  "type": "box",
+		  "layout": "horizontal",
+		  "margin": "lg",
+		  "spacing": "sm",
+		  "contents": [
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "雲量",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1
+				},
+				{
+				  "type": "text",
+				  "text": "75%",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end",
+				  "offsetEnd": "sm"
+				}
+			  ]
+			},
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "濕度",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1,
+				  "offsetStart": "sm"
+				},
+				{
+				  "type": "text",
+				  "text": "82%",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end"
+				}
+			  ]
+			}
+		  ],
+		  "alignItems": "center",
+		  "justifyContent": "center"
+		},
+		{
+		  "type": "box",
+		  "layout": "horizontal",
+		  "margin": "lg",
+		  "spacing": "sm",
+		  "contents": [
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "日出",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1
+				},
+				{
+				  "type": "text",
+				  "text": "06:18",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end",
+				  "offsetEnd": "sm"
+				}
+			  ]
+			},
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "日落",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1,
+				  "offsetStart": "sm"
+				},
+				{
+				  "type": "text",
+				  "text": "17:57",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end"
+				}
+			  ]
+			}
+		  ],
+		  "alignItems": "center",
+		  "justifyContent": "center"
+		},
+		{
+		  "type": "box",
+		  "layout": "horizontal",
+		  "margin": "lg",
+		  "spacing": "sm",
+		  "contents": [
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "體感",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1
+				},
+				{
+				  "type": "text",
+				  "text": "21˚",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end",
+				  "offsetEnd": "sm"
+				}
+			  ]
+			},
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "氣壓",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1,
+				  "offsetStart": "sm"
+				},
+				{
+				  "type": "text",
+				  "text": "1015百帕",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end"
+				}
+			  ]
+			}
+		  ],
+		  "alignItems": "center",
+		  "justifyContent": "center"
+		},
+		{
+		  "type": "box",
+		  "layout": "horizontal",
+		  "margin": "lg",
+		  "spacing": "sm",
+		  "contents": [
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "降雨量",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1
+				},
+				{
+				  "type": "text",
+				  "text": "0mm",
+				  "wrap": true,
+				  "color": "#666666",
+				  "size": "sm",
+				  "flex": 1,
+				  "align": "end",
+				  "offsetEnd": "sm"
+				}
+			  ]
+			},
+			{
+			  "type": "box",
+			  "layout": "baseline",
+			  "spacing": "sm",
+			  "contents": [
+				{
+				  "type": "text",
+				  "text": "降雪量",
+				  "color": "#aaaaaa",
+				  "size": "sm",
+				  "flex": 1,
+				  "offsetStart": "sm"
+				},
+				{
+				  "type": "text",
+				  "text": "0mm",
 				  "wrap": true,
 				  "color": "#666666",
 				  "size": "sm",

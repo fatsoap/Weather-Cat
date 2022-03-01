@@ -35,11 +35,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	for _, event := range message_events {
 		if event.Type == linebot.EventTypeFollow { //加好友
-			if err := handleFollow(event); err != nil {
+			if err := handleFollow(bot, event); err != nil {
 				fmt.Printf("Handle Follow Failed , User %s", event.Source.UserID)
 			}
 		} else if event.Type == linebot.EventTypeMessage { //訊息
-			if err := handleMessage(event); err != nil {
+			if err := handleMessage(bot, event); err != nil {
 				fmt.Printf("Handle Message Failed , User %s", event.Source.UserID)
 			}
 		}
