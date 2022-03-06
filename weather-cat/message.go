@@ -153,14 +153,8 @@ var flexMessageTemplate = `{
 		  "contents": [
 			{
 			  "type": "box",
-			  "layout": "horizontal",
+			  "layout": "vertical",
 			  "contents": [
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": [],
-				  "flex": 1
-				},
 				{
 				  "type": "text",
 				  "text": "%v",
@@ -174,17 +168,8 @@ var flexMessageTemplate = `{
 				  "size": "xxl",
 				  "align": "center",
 				  "flex": 1
-				},
-				{
-				  "type": "box",
-				  "layout": "vertical",
-				  "contents": [],
-				  "flex": 1
 				}
-			  ],
-			  "flex": 0,
-			  "alignItems": "center",
-			  "justifyContent": "center"
+			  ]
 			},
 			{
 			  "type": "box",
