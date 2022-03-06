@@ -40,7 +40,7 @@ sam build && sam local start-api
 ### Deploy to AWS
 
 ```
-sam deploy --guided
+sam build && sam deploy --guided
 ```
 
 ## References
