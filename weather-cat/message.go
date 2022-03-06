@@ -52,8 +52,8 @@ func handleMessage(bot *linebot.Client, event *linebot.Event) error {
 		{
 			text = fmt.Sprintf(flexMessageTemplate,
 				fmt.Sprintf("%v", time.Now().Nanosecond())[:2],
-				current.Weather[0].Description,
 				current.Main.Temp,
+				current.Weather[0].Description,
 				current.Main.TempMax,
 				current.Main.TempMin,
 				handleWind(current.Wind.Speed, current.Wind.Deg),
@@ -156,19 +156,19 @@ var flexMessageTemplate = `{
 			  "layout": "vertical",
 			  "contents": [
 				{
+					"type": "text",
+					"text": "%.0f˚",
+					"size": "xxl",
+					"align": "center",
+					"flex": 1
+				},
+				{
 				  "type": "text",
 				  "text": "%v",
 				  "size": "md",
 				  "align": "center",
 				  "flex": 1
-				},
-				{
-				  "type": "text",
-				  "text": "%.0f˚",
-				  "size": "xxl",
-				  "align": "center",
-				  "flex": 1
-				}
+				}				
 			  ]
 			},
 			{
